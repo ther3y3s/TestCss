@@ -4,13 +4,14 @@
 * "custom" refers to the theme assigned to the poll element
 */
 .custom {
-    background: #000;
+    background: #17242D;
     width: 400px;
     transition: opacity 1s;
     padding: 10px;
-    font-family: Abel;
-    // Hide when not active
-    opacity: 0;
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff;
+    opacity: 1;
+    overflow: hidden;
 }
 
 .custom.finished,
@@ -24,9 +25,8 @@
     padding: 0 10px;
 }
 
-.custom .total,
-.custom .duration {
-    background: #444;
+.custom .total, .custom .duration {
+    background: #2B383F;
     float: left;
     width: 49%;
     text-align: center;
@@ -79,8 +79,8 @@
     color: #fff;
     text-overflow: ellipsis;
     background: #888;
-    padding-right: 55px;
-    padding-left: 55px;
+    padding-right: 16px;
+    padding-left: 16px;
     font-size: 15px;
 }
 
@@ -121,16 +121,18 @@
 }
 
 .custom .options li .bar {
-    background: #444;
-    height: 5px;
-    margin-top: 5px;
+    background: #2B383F;
+    height: 16px;
+    margin-top: 12px;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .custom .options li .bar .bar-inner {
-    background: #fff;
+    background: #80f5d2;
     height: 100%;
     width: 0;
-    transition: width 1s;
+    transition: width 0.15s linear;
     position: relative;
 }
 
