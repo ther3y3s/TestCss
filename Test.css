@@ -1,221 +1,121 @@
-@import url(https://fonts.googleapis.com/css?family=Abel);
-
-/*
-* "custom" refers to the theme assigned to the poll element
-*/
-.custom {
-    background: #FFFFFF;
-    width: 400px;
-    transition: opacity 1s;
-    padding: 10px;
-    font-family: 'Roboto', sans-serif;
-    color: #e11e2c;
-    opacity: 1;
-    overflow: hidden;
+/* Reusable CSS variables */
+:root {
+  --size-xxs: 0.125rem; /* = 2px */
+  --size-xs: 0.25rem; /* = 4px */
+  --size-s: 0.5rem; /* = 8px */
+  --size-m: 1rem; /* = 16px */
+  --size-l: 1.5rem; /* = 24px */
+  --size-xl: 2rem; /* = 32 px */
+  --size-xxl: 2.5rem; /* = 40 px */
 }
 
-.custom.finished,
-.custom.active {
-    opacity: 1;
+/* Very basic HTML resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.custom .metaInfo {
-    background: green;
-    overflow: hidden;
-    padding: 0 10px;
+html {
+  font-family: Futura, sans-serif;
+  color: #ffffff;
 }
 
-.custom .total, .custom .duration {
-    background: #2B383F;
-    float: left;
-    width: 49%;
-    text-align: center;
-    padding: 10px;
-    margin: 10px 0;
-    line-height: 1.3;
+body {
+  height: 100vh;
+  font-size: var(--size-l);
 }
 
-.custom .total strong,
-.custom .duration strong {
-    color: #ffa;
-    font-size: 20px;
-    display: block;
+.container {
+  display: flex;
+  height: 100%;
+  padding: 30px;
 }
 
-.custom .total {
-    margin-right: 2%;
+.container.top-left {
+  align-items: flex-start;
 }
 
-.custom.finished .options li,
-.custom.removing .options li {
-    opacity: 0.3;
-    transition: all 1s;
+.container.top-right {
+  justify-content: right;
+  align-items: flex-start;
 }
 
-.custom.finished .options li.highest,
-.custom.removing .options li.highest {
-    color: #ffa;
-    opacity: 1;
+.container.bottom-right {
+  justify-content: right;
+  align-items: flex-end;
 }
 
-.custom.finished .options li.help,
-.custom.removing .options li.help {
-    height: 0;
+.container.bottom-left {
+  align-items: flex-end;
 }
 
-.custom.finished .metaInfo,
-.custom.removing .metaInfo {
-    opacity: 0.3;
+.poll {
+  min-width: 25%;
+  max-width: 600px;
+  padding: var(--size-xl);
+  visibility: hidden;
+  border-radius: var(--size-xxl);
+  background-color: rgba(0, 0, 0, 0.99);
 }
 
-.custom.active .options li.help {
-    height: 35px;
+.poll-title {
+  font-size: var(--size-xl);
+  margin-bottom: var(--size-xl);
 }
 
-.custom .options li {
-    position: relative;
-    border: 1px;
-    padding: 10px;
-    color: #e11e2c;
-    text-overflow: ellipsis;
-    background: #888;
-    padding-right: 16px;
-    padding-left: 16px;
-    font-size: 15px;
+.option + .option {
+  margin-top: var(--size-m);
 }
 
-.custom .options li.question {
-    padding: 10px 20px;
-    white-space: normal;
-    background: blue;
-    clear: both;
-    line-height: 1.3;
-    font-size: 20px;
-    position: relative;
+.option-number {
+  background-color: #823597;
+  color: #ffffff;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  font-weight: bold;
+  border-radius: var(--size-s);
+  display: inline-block;
 }
 
-.custom .options li.help {
-    background: brown;
-    text-align: center;
-    overflow: hidden;
-    height: 0;
+.progress-bar-container {
+  width: 100%;
+  border: var(--size-xs) solid #823597;
+  border-radius: var(--size-s);
+  margin-top: var(--size-s);
 }
 
-.custom .options li.help span {
-    display: block;
-    padding: 10px;
+.progress-bar {
+  transition: width 600ms ease-in-out;
+  width: 0;
+  height: 30px;
+  background-color: #823597;
 }
 
-.custom .options li .procent {
-    position: absolute;
-    top: 10px;
-    right: 15px;
+.option.winning-option .progress-bar-container {
+  border-color: #1ed581;
 }
 
-.custom .options li .number {
-    padding: 5px 10px;
-    background: #333;
-    position: absolute;
-    top: 5px;
-    left: 10px;
+.option.winning-option .progress-bar-container .progress-bar {
+  background-color: #1ed581;
 }
 
-.custom .options li .bar {
-    background: #2B383F;
-    height: 16px;
-    margin-top: 12px;
-    border-radius: 8px;
-    overflow: hidden;
+.option.winning-option .option-number {
+  background-color: #1ed581;
+  color: #000000;
 }
 
-.custom .options li .bar .bar-inner {
-    background: #80f5d2;
-    height: 100%;
-    width: 0;
-    transition: width 0.15s linear;
-    position: relative;
+.option.draw-option .progress-bar-container {
+  border-color: orange;
 }
 
-.custom .options li .text {
-    line-height: 1.3;
+.option.draw-option .option-number {
+  background-color: orange;
+  color: #000000;
 }
 
-/*
-* Optional outer border
-*/
-.custom .border {
-    border: 5px solid red;
-}
-
-.custom .credits {
-    opacity: 0;
-    height: 0;
-}
-
-.custom .credits {
-    text-align: center;
-    opacity: 1;
-    transition: all 1s;
-    height: 25px;
-    clear: both;
-    overflow: hidden;
-}
-
-.custom.active .credits,
-.custom.removing .credits {
-    height: 0;
-    opacity: 0;
-}
-
-/*
-* Positioning
-*/
-.custom.topLeft {
-    top: 20px;
-    left: 20px;
-}
-
-.custom.topCenter {
-    top: 20px;
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-
-.custom.topRight {
-    top: 20px;
-    right: 20px;
-}
-
-.custom.middleLeft {
-    top: 50%;
-    transform: translate(0, -50%);
-    left: 20px;
-}
-
-.custom.middleCenter {
-    top: 50%;
-    transform: translate(-50%, -50%);
-    left: 50%;
-}
-
-.custom.middleRight {
-    top: 50%;
-    transform: translate(0, -50%);
-    right: 20px;
-}
-
-.custom.bottomLeft {
-    bottom: 20px;
-    left: 20px;
-}
-
-.custom.bottomCenter {
-    bottom: 20px;
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-
-.custom.bottomRight {
-    bottom: 20px;
-    right: 20px;
+.option.draw-option .progress-bar-container .progress-bar {
+  background-color: orange;
 }
