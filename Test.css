@@ -1,221 +1,126 @@
-@import url(https://fonts.googleapis.com/css?family=Abel);
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .2s
+}
 
-/*
-* "custom" refers to the theme assigned to the poll element
-*/
-.custom {
-    background: #FFFFFF;
-    width: 400px;
-    transition: opacity 1s;
-    padding: 10px;
+.fade-enter,
+.fade-leave-to {
+    opacity: 0
+}
+
+#poll-container {
+    border-radius: 16px;
     font-family: 'Roboto', sans-serif;
-    color: #e11e2c;
+    color: #e11e2c; /* Cambiato il colore del testo a rosso */
+    background-color: #ffffff; /* Cambiato lo sfondo a bianco */
     opacity: 1;
     overflow: hidden;
 }
 
-.custom.finished,
-.custom.active {
-    opacity: 1;
+#poll-container.poll-container--hide {
+    opacity: 0;
 }
 
-.custom .metaInfo {
-    background: green;
-    overflow: hidden;
-    padding: 0 10px;
+#poll-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 16px 24px;
+    border-bottom: 1px solid #2B383F;
 }
 
-.custom .total, .custom .duration {
-    background: #2B383F;
-    float: left;
-    width: 49%;
+.poll-header-title,
+.text {
+    /*font-size: 20px;*/
+    /*font-weight: 700;*/
+    line-height: 30px;
+    color: #e11e2c; /* Cambiato il colore del testo a rosso */
+}
+
+.poll-header-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.poll-info-section {
+    display: flex;
+    flex-direction: column;
     text-align: center;
-    padding: 10px;
-    margin: 10px 0;
-    line-height: 1.3;
+    margin-left: 32px;
 }
 
-.custom .total strong,
-.custom .duration strong {
-    color: #ffa;
-    font-size: 20px;
-    display: block;
+.title {
+    /*font-size: 16px;*/
+    /*font-weight: 700;*/
+    line-height: 24px;
+    color: #e11e2c; /* Cambiato il colore del testo a rosso */
 }
 
-.custom .total {
-    margin-right: 2%;
+.options-container {
+    padding: 24px;
 }
 
-.custom.finished .options li,
-.custom.removing .options li {
-    opacity: 0.3;
-    transition: all 1s;
+.option-container {
+    margin-bottom: 24px;
 }
 
-.custom.finished .options li.highest,
-.custom.removing .options li.highest {
-    color: #ffa;
-    opacity: 1;
+.option-container:last-of-type {
+    margin-bottom: 0;
 }
 
-.custom.finished .options li.help,
-.custom.removing .options li.help {
-    height: 0;
-}
-
-.custom.finished .metaInfo,
-.custom.removing .metaInfo {
-    opacity: 0.3;
-}
-
-.custom.active .options li.help {
-    height: 35px;
-}
-
-.custom .options li {
+.progress-bar,
+.progress-bar-alt {
     position: relative;
-    border: 1px;
-    padding: 10px;
-    color: #e11e2c;
-    text-overflow: ellipsis;
-    background: #888;
-    padding-right: 16px;
-    padding-left: 16px;
-    font-size: 15px;
-}
-
-.custom .options li.question {
-    padding: 10px 20px;
-    white-space: normal;
-    background: blue;
-    clear: both;
-    line-height: 1.3;
-    font-size: 20px;
-    position: relative;
-}
-
-.custom .options li.help {
-    background: brown;
-    text-align: center;
-    overflow: hidden;
-    height: 0;
-}
-
-.custom .options li.help span {
-    display: block;
-    padding: 10px;
-}
-
-.custom .options li .procent {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-}
-
-.custom .options li .number {
-    padding: 5px 10px;
-    background: #333;
-    position: absolute;
-    top: 5px;
-    left: 10px;
-}
-
-.custom .options li .bar {
-    background: #2B383F;
     height: 16px;
-    margin-top: 12px;
+    margin-bottom: 12px;
     border-radius: 8px;
+    background-color: #2B383F;
     overflow: hidden;
 }
 
-.custom .options li .bar .bar-inner {
-    background: #80f5d2;
-    height: 100%;
-    width: 0;
-    transition: width 0.15s linear;
+.progress-bar > span,
+.progress-bar-alt > span {
     position: relative;
+    left: -16px;
+    display: block;
+    height: 100%;
+    background-color: #e11e2c; /* Cambiato il colore della barra a rosso */
+    border-radius: 8px;
+    transition: width 0.15s linear;
 }
 
-.custom .options li .text {
-    line-height: 1.3;
+.progress-bar-text {
+    font-size: 14px;
+    line-height: 21px;
+    color: #91979a;
 }
 
-/*
-* Optional outer border
-*/
-.custom .border {
-    border: 5px solid red;
+.progress-bar-alt {
+    background-color: #4F5E65;
 }
 
-.custom .credits {
-    opacity: 0;
-    height: 0;
-}
-
-.custom .credits {
-    text-align: center;
-    opacity: 1;
-    transition: all 1s;
-    height: 25px;
-    clear: both;
+.command-text {
+    display: block;
+    margin-right: 8px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.custom.active .credits,
-.custom.removing .credits {
-    height: 0;
-    opacity: 0;
+.progress-bar--thin {
+    height: 8px;
 }
 
-/*
-* Positioning
-*/
-.custom.topLeft {
-    top: 20px;
-    left: 20px;
-}
-
-.custom.topCenter {
-    top: 20px;
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-
-.custom.topRight {
-    top: 20px;
-    right: 20px;
-}
-
-.custom.middleLeft {
-    top: 50%;
-    transform: translate(0, -50%);
-    left: 20px;
-}
-
-.custom.middleCenter {
-    top: 50%;
-    transform: translate(-50%, -50%);
-    left: 50%;
-}
-
-.custom.middleRight {
-    top: 50%;
-    transform: translate(0, -50%);
-    right: 20px;
-}
-
-.custom.bottomLeft {
-    bottom: 20px;
-    left: 20px;
-}
-
-.custom.bottomCenter {
-    bottom: 20px;
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-
-.custom.bottomRight {
-    bottom: 20px;
-    right: 20px;
+.progress-bar--thin > span {
+    position: relative;
+    left: -8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
