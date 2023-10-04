@@ -4,12 +4,12 @@
 * "custom" refers to the theme assigned to the poll element
 */
 .custom {
-    background: #17242D;
+    background: #FFFFFF;
     width: 400px;
     transition: opacity 1s;
     padding: 10px;
     font-family: 'Roboto', sans-serif;
-    color: #ffffff;
+    color: #e11e2c;
     opacity: 1;
     overflow: hidden;
 }
@@ -76,7 +76,7 @@
     position: relative;
     border: 1px;
     padding: 10px;
-    color: #fff;
+    color: #e11e2c;
     text-overflow: ellipsis;
     background: #888;
     padding-right: 16px;
