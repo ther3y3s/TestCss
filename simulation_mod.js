@@ -3552,3 +3552,26 @@ window.addEventListener("channelPointsCustomReward", (e) => {
 document.addEventListener("DOMContentLoaded", () => {
   simulation.start();
 });
+
+
+
+// === StreamElements Manual Redeem Trigger ===
+window.addEventListener("onWidgetLoad", (obj) => {
+  window.fields = obj.detail?.fieldData || {};
+  if (typeof fields.redeemTestMessage !== "undefined") {
+    document.addEventListener("redeemTestMessage", () => {
+      const user = simulation.functions.randomElement(data.names);
+      const reward = simulation.functions.randomElement(data.redeems);
+      const event = new CustomEvent("channelPointsCustomReward", {
+        detail: {
+          user,
+          reward,
+          cost: reward.cost,
+          timestamp: Date.now()
+        }
+      });
+      window.dispatchEvent(event);
+      widget.success(`Manual redeem dispatched: ${user} → ${reward.title}`);
+    });
+  }
+});
