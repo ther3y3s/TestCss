@@ -1,71 +1,141 @@
-// Patch to add Twitch reward redemption events to simulation.js
+// Estensione del tuo script originale per simulare anche i Channel Points Redeem
 
-// Add to your list of event types:
-const EVENT_TYPES = [
-  "follow", "subscription", "cheer", "raid", "reward_redeem" // added
-];
+// === CONFIG ===
+let SE = false,
+  provider = 'twitch',
+  channel = '',
+  currency = '$',
+  mainDiv = 'main',
+  cfFile = 'cf.json',
+  consoleColorsEnabled = true,
+  intervals = [],
+  fields = {},
+  queue;
 
-// Add to your event generator:
-function generateRandomEvent() {
-  const type = EVENT_TYPES[Math.floor(Math.random() * EVENT_TYPES.length)];
+// === EVENT TYPES ===
+const availableEvents = ['redeem']; // aggiunto 'redeem'
 
-  switch (type) {
-    case "follow":
-      return { type, user: getRandomUsername(), timestamp: Date.now() };
-    case "subscription":
-      return { type, user: getRandomUsername(), tier: "Prime", timestamp: Date.now() };
-    case "cheer":
-      return { type, user: getRandomUsername(), bits: 100, timestamp: Date.now() };
-    case "raid":
-      return { type, user: getRandomUsername(), viewers: 42, timestamp: Date.now() };
-    case "reward_redeem":
-      return {
-        type,
-        user: getRandomUsername(),
-        reward: {
-          title: "Bevi acqua 💧",
-          cost: 1500
-        },
-        timestamp: Date.now()
+// === CHAT SETTINGS ===
+let maxMessageLength = 0,
+  maxRows = 12;
+
+// === DATI SIMULATI ===
+const data = {
+  names: ['Alice', 'Bob', 'Charlie', 'Dana'], // esemplificato
+  messages: ['Let’s go!', 'Nice play!', 'GG', 'What a move!'],
+  listeners: ['follower', 'host', 'cheer', 'subscriber', 'tip', 'raid', 'superchat', 'sponsor', 'redeem'],
+  redeems: [
+    { id: 'r1', title: 'Hydrate!', cost: 100, image: 'https://example.com/hydrate.png' },
+    { id: 'r2', title: 'Dance Break', cost: 500, image: 'https://example.com/dance.png' }
+  ],
+  simulation: {
+    enabled: true,
+    delays: { max: 5000, min: 2000 },
+    chances: { message: 50, event: 30, redeem: 20, double: 10 }
+  }
+};
+
+// === SIMULAZIONE ===
+const simulation = {
+  generate() {
+    widget.success('Simulazione avviata');
+    simulation.start.run();
+  },
+
+  start: {
+    run() {
+      const run = async () => {
+        const { enabled, chances, delays } = data.simulation;
+        if (!enabled) return;
+
+        const delay = simulation.functions.randomValue(delays.max, delays.min);
+        const roll = simulation.functions.randomValue(100);
+
+        if (roll < chances.redeem) {
+          const event = simulation.start.mockRedeem();
+          simulation.start.dispatch('channelPointsCustomReward', event);
+        } else if (roll < chances.redeem + chances.event) {
+          const event = simulation.start.mockEvent();
+          simulation.start.dispatch('onEventReceived', event);
+        } else {
+          const event = simulation.start.mockMessage();
+          simulation.start.dispatch('onMessage', event);
+        }
+
+        if (simulation.functions.randomValue(100) < chances.double) {
+          setTimeout(run, 200); // simulazione doppia
+        }
+
+        setTimeout(run, delay);
       };
-  }
-}
 
-// Show event label handler
-function showEventLabel(message, dataType = "generic") {
-  const eventDiv = document.createElement("font");
-  eventDiv.innerText = message;
-  eventDiv.dataset.type = dataType;
-  document.querySelector("main > div.event > div.events").appendChild(eventDiv);
-}
+      run();
+    },
 
-// Render logic for each event
-function renderEvent(event) {
-  switch (event.type) {
-    case "follow":
-      showEventLabel(`${event.user} ha iniziato a seguirti`, "follower");
-      break;
-    case "subscription":
-      showEventLabel(`${event.user} si è abbonato con ${event.tier}`, "subscriber");
-      break;
-    case "cheer":
-      showEventLabel(`${event.user} ha fatto cheer con ${event.bits} bit`, "cheer");
-      break;
-    case "raid":
-      showEventLabel(`${event.user} ha fatto raid con ${event.viewers} spettatori`, "raid");
-      break;
-    case "reward_redeem":
-      showEventLabel(`${event.user} ha riscattato: ${event.reward.title}`, "reward");
-      break;
-  }
-}
+    mockRedeem() {
+      const user = simulation.functions.randomElement(data.names);
+      const reward = simulation.functions.randomElement(data.redeems);
+      return {
+        detail: {
+          user,
+          reward,
+          cost: reward.cost,
+          image: reward.image,
+          timestamp: Date.now()
+        }
+      };
+    },
 
-// Add CSS for reward event if needed (injected or via <style>)
-const style = document.createElement("style");
-style.textContent = `
-  font[data-type=reward] {
-    --event-font-color: #ffffff;
-    --event-color: #54c5ff;
+    mockEvent() {
+      const name = simulation.functions.randomElement(data.names);
+      return {
+        detail: {
+          type: 'subscriber',
+          name,
+          amount: simulation.functions.randomValue(10, 1)
+        }
+      };
+    },
+
+    mockMessage() {
+      return {
+        detail: {
+          user: simulation.functions.randomElement(data.names),
+          message: simulation.functions.randomElement(data.messages)
+        }
+      };
+    },
+
+    dispatch(eventName, detail) {
+      window.dispatchEvent(new CustomEvent(eventName, detail));
+      widget.info(`Dispatched: ${eventName}`);
+    }
+  },
+
+  functions: {
+    randomValue(max, min = 0) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+    randomElement(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
   }
-`;
-document.head.appendChild(style);
+};
+
+// === CONSOLE LOG UTILITY ===
+const widget = {
+  success(msg) {
+    console.log('%c' + msg, 'color: white; background: green; padding: 4px;');
+  },
+  info(msg) {
+    console.log('%c' + msg, 'color: gray; font-style: italic;');
+  },
+  warn(msg) {
+    console.log('%c' + msg, 'color: red; background: yellow;');
+  }
+};
+
+// === AVVIO ===
+document.addEventListener('DOMContentLoaded', () => {
+  simulation.generate();
+});
